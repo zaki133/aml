@@ -1,0 +1,18 @@
+dropout early reg hyperparameter tuning:
+
+Best params: ([512, 256, 128], 0.3, 0.001, 32)                                                                                                                                            
+Best validation loss: 10.229323387145996
+
+dropout early reg resnet hyperparameter tuning:
+
+Best params: ([512, 256, 128, 64], 0.0001, 32)                                                                                                                                            
+Best validation loss: 10.190215110778809
+
+dropout early reg wNd hyperparameter tuning:
+
+Best params: ([512, 256, 128, 64], 0.1, 0.001, 64)                                                                                                                                        
+Best validation loss: 10.318988800048828
+
+cat_grid.py
+Best parameters found: {'depth': 6, 'iterations': 1500, 'learning_rate': 0.01}
+Validation MAPE: 9.6601%

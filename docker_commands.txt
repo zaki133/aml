@@ -1,0 +1,9 @@
+Building the docker (optional):
+
+docker build -t my_rocm_pytorch .
+
+
+Running the docker:
+
+docker run --net=host -it --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --shm-size 8G -v "$(pwd)":/workspace my_rocm_pytorch bash
+
