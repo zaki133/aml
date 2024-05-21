@@ -1,18 +1,52 @@
 dropout early reg hyperparameter tuning:
-
 Best params: ([512, 256, 128], 0.3, 0.001, 32)                                                                                                                                            
 Best validation loss: 10.229323387145996
 
 dropout early reg resnet hyperparameter tuning:
-
 Best params: ([512, 256, 128, 64], 0.0001, 32)                                                                                                                                            
 Best validation loss: 10.190215110778809
 
 dropout early reg wNd hyperparameter tuning:
-
 Best params: ([512, 256, 128, 64], 0.1, 0.001, 64)                                                                                                                                        
 Best validation loss: 10.318988800048828
 
-cat_grid.py
-Best parameters found: {'depth': 6, 'iterations': 1500, 'learning_rate': 0.01}
-Validation MAPE: 9.6601%
+cat_rnd.py:
+Best parameters found: {'bagging_temperature': 0.7371007058430192, 'border_count': 43, 'depth': 5, 'iterations': 1735, 'l2_leaf_reg': 1.578638977577074, 'learning_rate': 0.04945217986081299}
+Validation MAPE: 8.9438%
+
+cat_bayes.py:
+Best parameters found: {'bagging_temperature': 0.15720504451946082, 'depth': 8, 'iterations': 1921, 'l2_leaf_reg': 6.045462347649514, 'learning_rate': 0.06564863347971797}
+Validation MAPE: 8.8809%
+
+bagging.py (default catboost):
+Validation MAPE with Bagging: 8.9306%
+Validation MAPE with Bagging and PCA: 11.4398%
+
+light.py:
+Validation MAPE: 9.9163%
+
+xgboost_model.py:
+Validation MAPE: 9.9464%
+Validation MAPE with Optimized XGBoost: 9.1209%
+
+stacking.py:
+Validation MAPE with Stacking: 9.1544%
+
+meta.py:
+Validation MAPE with Stacking Ensemble: 9.6165%
+
+sae.py (simple average ensamble):
+Validation MAPE with Averaging Ensemble:    9.3911%
+    scaled: Validation MAPE with Averaging Ensemble: 9.3819%
+
+advanced stacking methods:
+Validation MAPE with Ridge Stacking:        9.6165%
+Validation MAPE with Lasso Stacking:        9.2938%
+Validation MAPE with ElasticNet Stacking:   9.2852%
+
+blending.py:
+Validation MAPE with Blending: 9.3390%
+
+
+voting.py (voting regressor):
+Validation MAPE with Voting Regressor:      9.3947%

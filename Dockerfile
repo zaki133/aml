@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
 
 # Install required Python libraries
 RUN pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/rocm4.2
-RUN pip install pandas Pillow tqdm pycocotools scikit-learn numpy==1.22.4
+RUN pip install torch pytorch-tabular pytorch-lightning lightgbm xgboost pandas Pillow tqdm pycocotools scikit-learn numpy==1.22.4
 
 # Install torchvision with ROCm support if not already included
 # Ensure torch, torchvision, and torchaudio versions are compatible

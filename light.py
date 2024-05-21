@@ -6,7 +6,7 @@ import lightgbm as lgb
 from sklearn.metrics import mean_absolute_percentage_error
 
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned.csv')
+df = pd.read_csv('house_prices_cleaned_v2.csv')
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])

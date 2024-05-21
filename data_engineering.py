@@ -43,13 +43,13 @@ if df.isnull().sum().any():
 else:
     print("All missing values have been handled.")
 
-# Step 4: Scaling Numerical Features
-#numerical_features = df.select_dtypes(include=[np.number])
-#scaler = StandardScaler()
-#df[numerical_features.columns] = scaler.fit_transform(numerical_features)
+# Step 4: Scaling Numerical Features (Bringt iwie nicht sonderlich viel, bzw garnichts)
+numerical_features = df.select_dtypes(include=[np.number])
+scaler = StandardScaler()
+df[numerical_features.columns] = scaler.fit_transform(numerical_features)
 
 # Save the cleaned dataframe
-df.to_csv("house_prices_cleaned_v2.csv", index=False)
+df.to_csv("house_prices_cleaned_v2_scaled.csv", index=False)
 
 # Check the cleaned dataframe
 print(df.info())
