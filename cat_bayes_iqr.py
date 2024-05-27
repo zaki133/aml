@@ -24,6 +24,17 @@ high_skewness = skewed_cols[skewed_cols > skewness_threshold]
 for col in high_skewness.index:
     X[col] = np.log1p(X[col])
 
+# Apply IQR method to remove outliers from the entire dataset for numerical features only
+numerical_cols = X.select_dtypes(include=[np.number])
+Q1 = numerical_cols.quantile(0.25)
+Q3 = numerical_cols.quantile(0.75)
+IQR = Q3 - Q1
+
+# Removing outliers from the numerical columns
+outlier_condition = ~((numerical_cols < (Q1 - 1.5 * IQR)) | (numerical_cols > (Q3 + 1.5 * IQR))).any(axis=1)
+X = X[outlier_condition]
+y = y[outlier_condition]
+
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 

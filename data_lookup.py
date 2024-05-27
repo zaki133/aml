@@ -10,10 +10,11 @@ pd.set_option('display.expand_frame_repr', False)
 pd.set_option('max_colwidth', None)
 
 # Load the dataset
-df = pd.read_csv("house_prices_cleaned.csv")
-df2 = pd.read_csv("house_prices_cleaned_v2.csv")
+# df = pd.read_csv("house_prices_cleaned.csv")
+df2 = pd.read_csv("house_prices_cleaned_v5.csv")
 # Display the full DataFrame information
-print(df.dtypes)
-print(df.info())
+# print(df.dtypes)
+# print(df.info())
 print(df2.dtypes)
 print(df2.info())
+print(df2.describe())

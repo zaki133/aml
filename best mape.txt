@@ -17,6 +17,26 @@ Validation MAPE: 8.9438%
 cat_bayes.py:
 Best parameters found: {'bagging_temperature': 0.15720504451946082, 'depth': 8, 'iterations': 1921, 'l2_leaf_reg': 6.045462347649514, 'learning_rate': 0.06564863347971797}
 Validation MAPE: 8.8809%
+            V3: 8.9238%
+            V4: Best parameters found: {'bagging_temperature': 0.35344299597366124, 'depth': 6, 'iterations': 1291, 'l2_leaf_reg': 4.3662027032967305, 'learning_rate': 0.027093665420061024}
+                Validation MAPE: 5.7653% # Nicht nutzbar weil viel zu viel weggemacht wurde
+            V5 log scaling:         Best parameters found: {'bagging_temperature': 0.0469541813454295, 'depth': 5, 'iterations': 1527, 'l2_leaf_reg': 2.09086303682607, 'learning_rate': 0.04174569981779644}
+                                    Cross-validated MAPE: 0.6794% ± 0.0329%
+                                    Test MAPE: 8.4914%
+
+            V5 Z-Method outliers:   Best parameters found: {'bagging_temperature': 0.22606655286083255, 'depth': 5, 'iterations': 1087, 'l2_leaf_reg': 9.104770789148295, 'learning_rate': 0.07019277755404353}
+                                    Cross-validated MAPE: 7.5141% ± 0.3666%
+                                    Test MAPE: 10.8249%
+
+            V5 IQR-Method outliers: Best parameters found: {'bagging_temperature': 0.18340450985343382, 'depth': 5, 'iterations': 1524, 'l2_leaf_reg': 4.887505167779041, 'learning_rate': 0.036210622617823776}
+                                    Cross-validated MAPE: 7.9561% ± 1.6916%
+                                    Test MAPE: 15.7556%
+            V5 Isolation outliers:  Cross-validated MAPE: 8.1624% ± 1.0494%
+                                    Test MAPE: 9.1992%
+            V5 LocalOutlierFactor:  Cross-validated MAPE: 8.2414% ± 0.5161%
+                                    Test MAPE: 9.4346%
+            v5 RobustScaling:       Cross-validated MAPE: 8.6044% ± 0.6650%
+                                    Test MAPE: 9.2647%
 
 bagging.py (default catboost):
 Validation MAPE with Bagging: 8.9306%

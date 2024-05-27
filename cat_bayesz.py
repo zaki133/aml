@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import mean_absolute_percentage_error
 from catboost import CatBoostRegressor
 from bayes_opt import BayesianOptimization
+from scipy import stats
 
 # Load the cleaned dataset
 df = pd.read_csv('house_prices_cleaned_v5_unscaled.csv')
@@ -23,6 +24,11 @@ high_skewness = skewed_cols[skewed_cols > skewness_threshold]
 
 for col in high_skewness.index:
     X[col] = np.log1p(X[col])
+
+# Apply Z-score method to remove outliers from the entire dataset
+z_scores = np.abs(stats.zscore(X.select_dtypes(include=[np.number])))
+X = X[(z_scores < 3).all(axis=1)]
+y = y[X.index]
 
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
