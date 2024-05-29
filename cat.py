@@ -3,9 +3,20 @@ import numpy as np
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import mean_absolute_percentage_error
 from catboost import CatBoostRegressor
-
+from sklearn.cluster import DBSCAN
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned_v5_unscaled.csv')
+df = pd.read_csv('house_prices_cleaned_v7_unscaled.csv')
+
+# Detect and remove outliers using DBSCAN based on SalePrice
+sale_price_values = df[['SalePrice']].values
+db = DBSCAN(eps=0.5, min_samples=5).fit(sale_price_values)
+labels = db.labels_
+
+# Create a mask for non-outliers
+non_outliers_mask = labels != -1
+
+# Apply the mask to the dataset
+df = df[non_outliers_mask]
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])
@@ -31,11 +42,11 @@ y_train_log = np.log1p(y_train)
 
 # Best parameters found from Bayesian Optimization
 best_params = {
-    'bagging_temperature': 0.619807875852009,
+    'bagging_temperature': 0.9860905303493148,
     'depth': 4,
-    'iterations': 1295,
-    'l2_leaf_reg': 4.602538681744479,
-    'learning_rate': 0.057704737497475546
+    'iterations': 1068,
+    'l2_leaf_reg': 6.720118993415256,
+    'learning_rate': 0.09429695444212349
 }
 
 # Train the model using cross-validation

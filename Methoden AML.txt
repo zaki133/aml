@@ -1,0 +1,28 @@
+Methoden benutzt:
+
+- Boosting (XGBoost, CATBoost, LGBMRegressor, GradientBoostingRegressor)
+- Neural Networks mit:
+	- WideDeepNN
+	- ResNet
+	- NODE Network
+	- ElasticNet
+	- Dropout
+	- Early Stopping
+	- Weight Decay
+- Bagging (bei meisten boosting Algorythmen)
+- VotingRegressor Ensamble
+- StackingRegressor Ensamble mit:
+	- LassoCV
+	- RidgeCV
+	- ElasticNetCV
+- Ridge Model
+- Lasso Model
+- Random Forest
+- Blending Ensamble
+- PCA mit StackingRegressor Ensamble mit:
+	- LassoCV
+	- RidgeCV
+	- ElasticNetCV
+- PCA Bagging
+- Bayesian Optimization
+- SVR

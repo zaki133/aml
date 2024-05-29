@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
 
 
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned.csv')
+df = pd.read_csv('house_prices_cleaned_v6_unscaled.csv')
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])

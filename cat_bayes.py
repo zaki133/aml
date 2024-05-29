@@ -4,9 +4,22 @@ from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import mean_absolute_percentage_error
 from catboost import CatBoostRegressor
 from bayes_opt import BayesianOptimization
+from datetime import datetime
+from sklearn.cluster import DBSCAN
 
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned_v5_unscaled.csv')
+df = pd.read_csv('house_prices_cleaned_v7_unscaled.csv')
+
+# Detect and remove outliers using DBSCAN based on SalePrice
+sale_price_values = df[['SalePrice']].values
+db = DBSCAN(eps=0.5, min_samples=5).fit(sale_price_values)
+labels = db.labels_
+
+# Create a mask for non-outliers
+non_outliers_mask = labels != -1
+
+# Apply the mask to the dataset
+df = df[non_outliers_mask]
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])
@@ -48,18 +61,20 @@ def catboost_hyperparam(depth, iterations, learning_rate, l2_leaf_reg, bagging_t
     y_val_pred = np.expm1(y_val_pred_log)
     return -mean_absolute_percentage_error(y_test, y_val_pred)  # Maximize negative MAPE
 
-# Define the parameter space
+# Define the parameter space closer to the previously found best parameters
 pbounds = {
-    'depth': (4, 10),
-    'iterations': (1000, 2000),
-    'learning_rate': (0.01, 0.1),
-    'l2_leaf_reg': (1, 10),
-    'bagging_temperature': (0, 1)
+    'depth': (3.8, 4.2),
+    'iterations': (900, 1100),
+    'learning_rate': (0.09, 0.1),
+    'l2_leaf_reg': (6.3, 6.8),
+    'bagging_temperature': (0.7, 1)
 }
 
-# Run Bayesian Optimization
+time1 = datetime.now()
+
+# Run Bayesian Optimization with increased iterations
 optimizer = BayesianOptimization(f=catboost_hyperparam, pbounds=pbounds, random_state=42)
-optimizer.maximize(init_points=10, n_iter=50)
+optimizer.maximize(init_points=20, n_iter=1000)
 
 # Get the best parameters
 best_params = optimizer.max['params']
@@ -67,9 +82,12 @@ best_params['depth'] = int(best_params['depth'])
 best_params['iterations'] = int(best_params['iterations'])
 print(f'Best parameters found: {best_params}')
 
+time2 = datetime.now()
+
 # Train the final model with the best parameters
 best_model = CatBoostRegressor(**best_params, cat_features=cat_features, random_seed=42, verbose=0)
 best_model.fit(X_train, y_train_log)
+print(f'Time taken: {time2 - time1}')
 
 # Predict on the test dataset
 y_test_pred_log = best_model.predict(X_test)

@@ -13,7 +13,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
 
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned_v2.csv')
+df = pd.read_csv('house_prices_cleaned_v6_unscaled.csv')
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])

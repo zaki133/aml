@@ -37,6 +37,12 @@ Validation MAPE: 8.8809%
                                     Test MAPE: 9.4346%
             v5 RobustScaling:       Cross-validated MAPE: 8.6044% ± 0.6650%
                                     Test MAPE: 9.2647%
+            V6 log scaling:         Best parameters found: {'bagging_temperature': 0.8017170348436947, 'depth': 4, 'iterations': 1052, 'l2_leaf_reg': 6.63315691134936, 'learning_rate': 0.09841558230872788}
+                                    Cross-validated MAPE: 0.6794% ± 0.0408%
+                                    Test MAPE: 8.1076%
+            V6 DBSCAN:              Best parameters found: {'bagging_temperature': 0.7759953634860398, 'depth': 3, 'iterations': 1071, 'l2_leaf_reg': 6.466071231433948, 'learning_rate': 0.0999076112410374}
+                                    Cross-validated MAPE: 0.6262% ± 0.0696%
+                                    Test MAPE: 7.9189%
 
 bagging.py (default catboost):
 Validation MAPE with Bagging: 8.9306%
