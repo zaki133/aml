@@ -43,6 +43,9 @@ Validation MAPE: 8.8809%
             V6 DBSCAN:              Best parameters found: {'bagging_temperature': 0.7759953634860398, 'depth': 3, 'iterations': 1071, 'l2_leaf_reg': 6.466071231433948, 'learning_rate': 0.0999076112410374}
                                     Cross-validated MAPE: 0.6262% ± 0.0696%
                                     Test MAPE: 7.9189%
+            V7 Man outl, Lot:       Best parameters found: {'bagging_temperature': 0.9860905303493148, 'depth': 4, 'iterations': 1068, 'l2_leaf_reg': 6.720118993415256, 'learning_rate': 0.09429695444212349}
+                                    Cross-validated MAPE: 0.6316% ± 0.0716%
+                                    Test MAPE: 7.1065%
 
 bagging.py (default catboost):
 Validation MAPE with Bagging: 8.9306%
