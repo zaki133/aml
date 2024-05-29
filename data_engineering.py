@@ -9,15 +9,15 @@ from sklearn.impute import SimpleImputer
 # Load the dataset
 df = pd.read_csv('dataset.csv')
 
-# Step 1: Handling Missing Values for other columns
-df['MasVnrArea'] = df['MasVnrArea'].fillna(0)
-df['GarageYrBlt'] = df['GarageYrBlt'].fillna(df.YearBuilt)
-
+# Step 1: Handling Missing Values for columns that we dont know anything about..
 imputer_mode = SimpleImputer(strategy='most_frequent')
 categorical_cols = ['Electrical']
 df[categorical_cols] = imputer_mode.fit_transform(df[categorical_cols])
 
 # Fill meaningful NaN values
+
+df['MasVnrArea'] = df['MasVnrArea'].fillna(0)
+df['GarageYrBlt'] = df['GarageYrBlt'].fillna(df.YearBuilt)
 df['Alley'] = df['Alley'].fillna('NoAlley')
 df['PoolQC'] = df['PoolQC'].fillna('NoPool')
 df['Fence'] = df['Fence'].fillna('NoFence')
