@@ -23,6 +23,12 @@ Methoden benutzt:
 	- LassoCV
 	- RidgeCV
 	- ElasticNetCV
-- PCA Bagging
+- PCA mit Bagging
 - Bayesian Optimization
 - SVR
+- DBSCAN Ausreißerbehandlung
+- Z-Score Ausreißerbehandlung
+- IQR Ausreißerbehandlung
+- Local Outlier Factor (LOF) Ausreißerbehandlung
+- RobustScaler Ausreißerbehandlung 
+- Log transform scaling Ausreißerbehandlung
