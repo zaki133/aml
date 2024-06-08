@@ -31,22 +31,35 @@ Validation MAPE: 8.8809%
             V5 IQR-Method outliers: Best parameters found: {'bagging_temperature': 0.18340450985343382, 'depth': 5, 'iterations': 1524, 'l2_leaf_reg': 4.887505167779041, 'learning_rate': 0.036210622617823776}
                                     Cross-validated MAPE: 7.9561% ± 1.6916%
                                     Test MAPE: 15.7556%
+
             V5 Isolation outliers:  Cross-validated MAPE: 8.1624% ± 1.0494%
                                     Test MAPE: 9.1992%
+
             V5 LocalOutlierFactor:  Cross-validated MAPE: 8.2414% ± 0.5161%
                                     Test MAPE: 9.4346%
+
             v5 RobustScaling:       Cross-validated MAPE: 8.6044% ± 0.6650%
                                     Test MAPE: 9.2647%
+
             V6 log scaling:         Best parameters found: {'bagging_temperature': 0.8017170348436947, 'depth': 4, 'iterations': 1052, 'l2_leaf_reg': 6.63315691134936, 'learning_rate': 0.09841558230872788}
                                     Cross-validated MAPE: 0.6794% ± 0.0408%
                                     Test MAPE: 8.1076%
+
             V6 DBSCAN:              Best parameters found: {'bagging_temperature': 0.7759953634860398, 'depth': 3, 'iterations': 1071, 'l2_leaf_reg': 6.466071231433948, 'learning_rate': 0.0999076112410374}
                                     Cross-validated MAPE: 0.6262% ± 0.0696%
                                     Test MAPE: 7.9189%
-            V7 Man outl, Lot:       Best parameters found: {'bagging_temperature': 0.9860905303493148, 'depth': 4, 'iterations': 1068, 'l2_leaf_reg': 6.720118993415256, 'learning_rate': 0.09429695444212349}
-                                    Cross-validated MAPE: 0.6316% ± 0.0716%
-                                    Test MAPE: 7.1065%
 
+(           V7 Man outl, Lot:       Best parameters found: {'bagging_temperature': 0.8742026979501837, 'depth': 4, 'iterations': 1011, 'l2_leaf_reg': 6.314663308121075, 'learning_rate': 0.09641716192461626}
+                                    Time taken: 0:27:37.086104
+                                    Test MAPE: 6.7667%) - Kann man nicht benutzten weil wir so einfach nicht offensichtliche ausreißer behandeln können
+            
+            V8:                     Best parameters found: {'bagging_temperature': 0.9658981103112363, 'depth': 4, 'iterations': 1053, 'l2_leaf_reg': 6.452840930022608, 'learning_rate': 0.09652590663237373}
+                                    Time taken: 0:31:06.467532
+                                    Test MAPE: 7.0331%
+            V9:                     Best parameters found: {'bagging_temperature': 0.7135283954371104, 'depth': 3, 'iterations': 1091, 'l2_leaf_reg': 6.754156833807452, 'learning_rate': 0.09953416832883896}
+                                    Time taken: 0:30:38.261809
+                                    Test MAPE: 7.0126%
+                                    
 bagging.py (default catboost):
 Validation MAPE with Bagging: 8.9306%
 Validation MAPE with Bagging and PCA: 11.4398%

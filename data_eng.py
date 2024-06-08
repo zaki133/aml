@@ -1,21 +1,25 @@
 import pandas as pd
 import numpy as np
-from sklearn import svm
 from sklearn.model_selection import KFold
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, ExtraTreesRegressor
+from sklearn.svm import SVR
+from sklearn.neighbors import KNeighborsRegressor
+import json
 
 # Load the dataset
 df = pd.read_csv('dataset.csv')
 
-# Step 1: Handling Missing Values for columns that we dont know anything about..
+# Step 1: Handling Missing Values for columns that we don't know anything about..
 imputer_mode = SimpleImputer(strategy='most_frequent')
 categorical_cols = ['Electrical']
 df[categorical_cols] = imputer_mode.fit_transform(df[categorical_cols])
 
 # Fill meaningful NaN values
-
 df['MasVnrArea'] = df['MasVnrArea'].fillna(0)
 df['GarageYrBlt'] = df['GarageYrBlt'].fillna(df.YearBuilt)
 df['Alley'] = df['Alley'].fillna('NoAlley')
@@ -67,45 +71,52 @@ for col in X_train.columns:
         X_test[col] = 0
 X_test = X_test[X_train.columns]
 
-# Classifier with tuned parameters
-clf = svm.SVR(kernel='rbf', C=100, gamma=0.001)
+# Define the models to compare
+models = {
+    'LinearRegression': LinearRegression(),
+    'DecisionTree': DecisionTreeRegressor(random_state=42),
+    'RandomForest': RandomForestRegressor(n_estimators=100, random_state=42),
+    'GradientBoosting': GradientBoostingRegressor(n_estimators=100, random_state=42),
+    'SVR': SVR(kernel='rbf', C=100, gamma=0.001),
+    'KNeighbors': KNeighborsRegressor(n_neighbors=5),
+    'ExtraTrees': ExtraTreesRegressor(n_estimators=100, random_state=42)
+}
 
-# Set initial scores
-acc = 0
-acc1 = 0
-acc2 = 0
-
-# Define k-fold object for 10-fold validation
+# Perform k-fold cross-validation and compare models
 kf = KFold(n_splits=10, shuffle=True, random_state=3)
+model_scores = {}
 
-# Main evaluator loop over the 10 folds
-for trn, tst in kf.split(train_data):
-    # Compute benchmark score prediction based on mean neighbourhood LotFrontage
-    fold_train_samples = train_data.iloc[trn]
-    fold_test_samples = train_data.iloc[tst]
-    neigh_means = fold_train_samples.groupby('Neighborhood')['LotFrontage'].mean()
-    all_mean = fold_train_samples['LotFrontage'].mean()
-    y_pred_neigh_means = fold_test_samples.join(neigh_means, on='Neighborhood', lsuffix='benchmark')['LotFrontage']
-    y_pred_all_mean = [all_mean] * fold_test_samples.shape[0]
+for name, model in models.items():
+    mae_scores = []
+    rmse_scores = []
+    r2_scores = []
+    for trn_idx, tst_idx in kf.split(X_train):
+        model.fit(X_train.iloc[trn_idx], y_train.iloc[trn_idx])
+        preds = model.predict(X_train.iloc[tst_idx])
+        mae_scores.append(mean_absolute_error(y_train.iloc[tst_idx], preds))
+        rmse_scores.append(np.sqrt(mean_squared_error(y_train.iloc[tst_idx], preds)))
+        r2_scores.append(r2_score(y_train.iloc[tst_idx], preds))
+    model_scores[name] = {
+        'MAE': np.mean(mae_scores),
+        'RMSE': np.mean(rmse_scores),
+        'R2': np.mean(r2_scores)
+    }
+    print(f'{name} MAE: {np.mean(mae_scores):.3f}, RMSE: {np.mean(rmse_scores):.3f}, R2: {np.mean(r2_scores):.3f}')
 
-    # Compute benchmark score prediction based on overall mean LotFrontage
-    acc1 += mean_absolute_error(fold_test_samples['LotFrontage'], y_pred_neigh_means)
-    acc2 += mean_absolute_error(fold_test_samples['LotFrontage'], y_pred_all_mean)
+# Save model performances to a JSON file
+with open('model_imputation_performances.json', 'w') as f:
+    json.dump(model_scores, f, indent=4)
 
-    # Perform model fitting
-    clf.fit(X_train.iloc[trn], y_train.iloc[trn])
+# Select the best model
+best_model_name = min(model_scores, key=lambda x: model_scores[x]['MAE'])
+best_model = models[best_model_name]
+print(f'Best model: {best_model_name}')
 
-    # Record all scores for averaging
-    acc += mean_absolute_error(fold_test_samples['LotFrontage'], clf.predict(X_train.iloc[tst]))
+# Train the best model on the entire training data
+best_model.fit(X_train, y_train)
 
-print('10-Fold Validation Mean Absolute Error results:')
-print(f'\tSVR: {acc / 10:.3f}')
-print(f'\tSingle mean: {acc2 / 10:.3f}')
-print(f'\tNeighbourhood mean: {acc1 / 10:.3f}')
-
-# Final imputation on the full dataset
-clf.fit(X_train, y_train)
-df.loc[df['LotFrontage'].isnull(), 'LotFrontage'] = clf.predict(X_test)
+# Impute the missing LotFrontage values
+df.loc[df['LotFrontage'].isnull(), 'LotFrontage'] = best_model.predict(X_test)
 
 nominal_cols = ['MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities', 'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2', 'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType', 'Foundation', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2', 'Heating', 'Electrical', 'Functional', 'GarageType', 'GarageFinish', 'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 'SaleType', 'SaleCondition']
 df = pd.get_dummies(df, columns=nominal_cols)
@@ -121,56 +132,13 @@ df.drop(['YearBuilt', 'YearRemodAdd', 'GarageYrBlt'], axis=1, inplace=True)
 df['TotalBath'] = df['BsmtFullBath'] + df['BsmtHalfBath'] * 0.5 + df['FullBath'] + df['HalfBath'] * 0.5
 df['TotalPorchSF'] = df['OpenPorchSF'] + df['EnclosedPorch'] + df['3SsnPorch'] + df['ScreenPorch']
 
-# Step 4: Scaling Numerical Features
-numerical_features = df.select_dtypes(include=[np.number])
-
 # Data Cleaning (without SalePrice)
-
-# # Replace outlier with next lower value
-# max_lot_frontage = df['LotFrontage'].max()
-# second_max_value = df['LotFrontage'][df['LotFrontage'] != max_lot_frontage].max()
-# df['LotFrontage'] = df['LotFrontage'].replace(max_lot_frontage, second_max_value)
-
-
-# # Remove the 2 highest outliers and replace them with the next lower value
-# top_two_values = df['MasVnrArea'].nlargest(2).unique()
-# next_lower_value = df['MasVnrArea'][~df['MasVnrArea'].isin(top_two_values)].max()
-# df['MasVnrArea'] = df['MasVnrArea'].apply(lambda x: next_lower_value if x in top_two_values else x)
-
-# # Remove highest outlier
-# max_value = df['BsmtFinSF1'].max()
-# df = df[df['BsmtFinSF1'] != max_value]
-
-# # Replace highest outlier with next lower value
-# max_value = df['BsmtFinSF2'].max()
-# second_max_value = df['BsmtFinSF2'][df['BsmtFinSF2'] != max_value].max()
-# df['BsmtFinSF2'] = df['BsmtFinSF2'].replace(max_value, second_max_value)
-
-# # Remove highest outlier
-# max_value = df['TotalBsmtSF'].max()
-# df = df[df['TotalBsmtSF'] != max_value]
-
-# # Remove highest outlier
-# max_value = df['1stFlrSF'].max()
-# df = df[df['1stFlrSF'] != max_value]
-
-# # Remove values below threshold
-df = df[df['SalePrice'] <= 450000]
-df = df[df['SalePrice'] >= 50000]
-# df = df[df['LotArea'] <= 100000]
-# df = df[df['GrLivArea'] <= 4000]
-# df = df[df['BsmtFullBath'] <= 2]
-# df = df[df['BedroomAbvGr'] <= 7]
-# df = df[df['KitchenAbvGr'] < 3]
-# df = df[df['Fireplaces'] < 3]
-# df = df[df['OpenPorchSF'] < 400]
-# df = df[df['EnclosedPorch'] < 400]
-# df = df[df['3SsnPorch'] < 400]
-# df = df[df['MiscVal'] < 500]
-# df = df[df['TotalPorchSF'] < 800]
+# Remove values below threshold
+# df = df[df['SalePrice'] <= 450000]
+# df = df[df['SalePrice'] >= 50000]
 
 # Save the cleaned dataframe
-df.to_csv("house_prices_cleaned_v8_unscaled.csv", index=False)
+df.to_csv("house_prices_cleaned_v9_unfeatured.csv", index=False)
 
 # Check the cleaned dataframe
 print(df.info())

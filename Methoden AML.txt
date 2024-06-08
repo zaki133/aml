@@ -26,6 +26,15 @@ Methoden benutzt:
 - PCA mit Bagging
 - Bayesian Optimization
 - SVR
+- Imputing LotFrontage mit:
+	- SVR
+	- RF
+	- Linear Regression
+	- ExtraTrees
+	- KNeighbors
+	- GradientBoosting
+	- DecisionTree
+ 
 - DBSCAN Ausreißerbehandlung
 - Z-Score Ausreißerbehandlung
 - IQR Ausreißerbehandlung
