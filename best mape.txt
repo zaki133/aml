@@ -58,7 +58,12 @@ Validation MAPE: 8.8809%
                                     Test MAPE: 7.0331%
             V9:                     Best parameters found: {'bagging_temperature': 0.7135283954371104, 'depth': 3, 'iterations': 1091, 'l2_leaf_reg': 6.754156833807452, 'learning_rate': 0.09953416832883896}
                                     Time taken: 0:30:38.261809
+                                    Cross-validated MAPE: 0.6909% ± 0.0263%
                                     Test MAPE: 7.0126%
+                                    Ohne Log Transformation: 7.0239%
+            V9 ohne begrenzung:     Best parameters found: {'bagging_temperature': 0.9520724460720427, 'depth': 3, 'iterations': 932, 'l2_leaf_reg': 6.4235271116399115, 'learning_rate': 0.0925705612993649}
+                                    Time taken: 0:38:21.313607
+                                    Test MAPE: 8.4883%
                                     
 bagging.py (default catboost):
 Validation MAPE with Bagging: 8.9306%

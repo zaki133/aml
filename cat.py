@@ -5,18 +5,8 @@ from sklearn.metrics import mean_absolute_percentage_error
 from catboost import CatBoostRegressor
 from sklearn.cluster import DBSCAN
 # Load the cleaned dataset
-df = pd.read_csv('house_prices_cleaned_v7_unscaled.csv')
+df = pd.read_csv('house_prices_cleaned_v9_unscaled.csv')
 
-# Detect and remove outliers using DBSCAN based on SalePrice
-sale_price_values = df[['SalePrice']].values
-db = DBSCAN(eps=0.5, min_samples=5).fit(sale_price_values)
-labels = db.labels_
-
-# Create a mask for non-outliers
-non_outliers_mask = labels != -1
-
-# Apply the mask to the dataset
-df = df[non_outliers_mask]
 
 # Separate features and target
 X = df.drop(columns=['SalePrice', 'Id'])
@@ -25,14 +15,14 @@ y = df['SalePrice']
 # Identify categorical features
 cat_features = [X.columns.get_loc(col) for col in X.select_dtypes(include='object').columns]
 
-# Log transformation on skewed numerical features in the entire dataset except SalePrice
-numerical_features = X.select_dtypes(include=[np.number])
-skewed_cols = numerical_features.apply(lambda x: x.skew()).sort_values(ascending=False)
-skewness_threshold = 0.75
-high_skewness = skewed_cols[skewed_cols > skewness_threshold]
+# # Log transformation on skewed numerical features in the entire dataset except SalePrice
+# numerical_features = X.select_dtypes(include=[np.number])
+# skewed_cols = numerical_features.apply(lambda x: x.skew()).sort_values(ascending=False)
+# skewness_threshold = 0.75
+# high_skewness = skewed_cols[skewed_cols > skewness_threshold]
 
-for col in high_skewness.index:
-    X[col] = np.log1p(X[col])
+# for col in high_skewness.index:
+#     X[col] = np.log1p(X[col])
 
 # Split the data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -42,11 +32,11 @@ y_train_log = np.log1p(y_train)
 
 # Best parameters found from Bayesian Optimization
 best_params = {
-    'bagging_temperature': 0.9860905303493148,
-    'depth': 4,
-    'iterations': 1068,
-    'l2_leaf_reg': 6.720118993415256,
-    'learning_rate': 0.09429695444212349
+    'bagging_temperature': 0.7135283954371104,
+    'depth': 3,
+    'iterations': 1091,
+    'l2_leaf_reg': 6.754156833807452,
+    'learning_rate': 0.09953416832883896
 }
 
 # Train the model using cross-validation
