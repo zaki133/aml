@@ -1,43 +1,48 @@
 Methoden benutzt:
 
-- Boosting (XGBoost, CATBoost, LGBMRegressor, GradientBoostingRegressor)
+- Boosting (XGBoost (hatten), CATBoost auch mit bagging nativ, LGBMRegressor, GradientBoostingRegressor)
+
+- Bagging (bei meisten boosting Algorythmen)(hatten)
+
 - Neural Networks mit:
-	- WideDeepNN
-	- ResNet
-	- NODE Network
-	- ElasticNet
-	- Dropout
-	- Early Stopping
-	- Weight Decay
-- Bagging (bei meisten boosting Algorythmen)
-- VotingRegressor Ensamble
-- StackingRegressor Ensamble mit:
+	#- Netzarchitektur:
+		- WideDeepNN
+		- ResNet
+		- NODE Network
+		- ElasticNet
+
+	- Methoden:
+		- Dropout (hatten)
+		- Early Stopping
+		- Weight Decay
+
+- Ensamble:
+	- VotingRegressor Ensamble
+	- Blending Ensamble
+	- StackingRegressor Ensamble mit:
+		- LassoCV
+		- RidgeCV
+		- ElasticNetCV
+
+- PCA(hatten) mit StackingRegressor Ensamble mit:
 	- LassoCV
 	- RidgeCV
 	- ElasticNetCV
+- PCA(hatten) mit Bagging
+
 - Ridge Model
 - Lasso Model
-- Random Forest
-- Blending Ensamble
-- PCA mit StackingRegressor Ensamble mit:
-	- LassoCV
-	- RidgeCV
-	- ElasticNetCV
-- PCA mit Bagging
+- Random Forest(hatten)
+
 - Bayesian Optimization
-- SVR
+
 - Imputing LotFrontage mit:
-	- SVR
-	- RF
-	- Linear Regression
+	- SVR(hatten)
+	- RF(hatten)
+	- Linear Regression(hatten)
 	- ExtraTrees
-	- KNeighbors
-	- GradientBoosting
-	- DecisionTree
- 
-- DBSCAN Ausreißerbehandlung
-- Z-Score Ausreißerbehandlung
-- IQR Ausreißerbehandlung
-- Local Outlier Factor (LOF) Ausreißerbehandlung
-- RobustScaler Ausreißerbehandlung 
+	- KNeighbors(hatten)
+	- GradientBoosting(hatten)
+	- DecisionTree(hatten)
+
 - Log transform scaling Ausreißerbehandlung
