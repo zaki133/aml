@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the dataset
-df = pd.read_csv("house_prices_cleaned_v7_unscaled.csv")
+df = pd.read_csv("house_prices_cleaned_v9_unscaled.csv")
 
 # Compute the correlation matrix
 corr_matrix = df.corr()
@@ -10,7 +10,7 @@ corr_matrix = df.corr()
 sale_price_corr = corr_matrix['SalePrice']
 
 # Filter for correlations greater than 0.6
-high_corr = sale_price_corr[abs(sale_price_corr) > 0.6]
+high_corr = sale_price_corr[abs(sale_price_corr) > 0.3]
 
 # Display the filtered correlations
 print(high_corr)
